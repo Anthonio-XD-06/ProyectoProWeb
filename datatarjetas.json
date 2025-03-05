@@ -1,0 +1,16 @@
+[
+  {
+      "id": 1,
+      "nombre": "Visa Santander",
+      "saldo": 12500,
+      "fechaCorte": "15/03/2025",
+      "proximoPago": "2000 - 20/03/2025"
+  },
+  {
+      "id": 2,
+      "nombre": "BBVA Oro",
+      "saldo": 5000,
+      "fechaCorte": "10/03/2025",
+      "proximoPago": "1500 - 15/03/2025"
+  }
+]
