@@ -6,6 +6,10 @@ document.getElementById('agregar-tarjeta-btn').addEventListener('click', mostrar
 document.getElementById('compras-btn').addEventListener('click', mostrarRegistrarCompra);
 document.getElementById('cerrar-sesion-btn').addEventListener('click', cerrarSesion);
 
+document.getElementById('ver-tarjetas-btn').addEventListener('click', mostrarTarjetas);
+document.getElementById('ver-compras-btn').addEventListener('click', mostrarCompras);
+
+
 function verificarSesion() {
     const sesion = localStorage.getItem('sesion');
     if (!sesion) {
