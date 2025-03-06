@@ -36,8 +36,8 @@ function mostrarRegistrarCompra(nombreTarjeta) {
     content.innerHTML = `
         <h2>Registrar Compra</h2>
         <label>Nombre de la tarjeta: <input type="text" id="nombre-tarjeta-compra" value="${nombreTarjeta}" disabled></label>
-        <label>Monto de la compra: <input type="number" id="monto-compra"></label>
-        <label>Fecha de la compra: <input type="date" id="fecha-compra"></label>
+        <label>Monto de la compra: <input type="number" id="monto-compra" required></label>
+        <label>Fecha de la compra: <input type="date" id="fecha-compra" required></label>
         <button onclick="guardarCompra('${nombreTarjeta}')">Registrar Compra</button>
         <div id="mensaje-guardar-compra"></div>
     `;
@@ -48,13 +48,13 @@ function guardarCompra(nombreTarjeta) {
     const fechaCompra = document.getElementById('fecha-compra').value;
 
     if (!monto || !fechaCompra) {
-        alert('Completa todos los campos.');
+        alert('Por favor, completa todos los campos correctamente.');
         return;
     }
 
     // Recuperar las tarjetas del localStorage
     let tarjetas = JSON.parse(localStorage.getItem('tarjetas')) || [];
-    
+
     // Buscar la tarjeta en la que se registrará la compra
     const tarjeta = tarjetas.find(tarjeta => tarjeta.nombre === nombreTarjeta);
     
@@ -64,6 +64,9 @@ function guardarCompra(nombreTarjeta) {
     }
 
     // Registrar la compra en la tarjeta
+    if (!tarjeta.compras) {
+        tarjeta.compras = []; // Si no tiene compras, inicializar el array
+    }
     tarjeta.compras.push({ monto, fechaCompra });
 
     // Guardar nuevamente las tarjetas con la compra agregada
@@ -71,4 +74,7 @@ function guardarCompra(nombreTarjeta) {
 
     // Confirmación
     document.getElementById('mensaje-guardar-compra').innerHTML = `Compra de $${monto} registrada correctamente.`;
+    setTimeout(() => {
+        mostrarDashboard(); // Volver al dashboard después de registrar la compra
+    }, 1500);
 }
