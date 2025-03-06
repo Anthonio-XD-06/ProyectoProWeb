@@ -2,35 +2,21 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Admin Finanzas</title>
-    <link rel="stylesheet" href="estilos.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administra tus Finanzas</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-<header>
-    <h1>Administrador de Finanzas</h1>
     <nav>
-        <!-- Botón de Dashboard -->
         <button id="dashboard-btn">Dashboard</button>
-
-        <!-- Botón para simular préstamos -->
         <button id="simulador-btn">Simulador</button>
-
-        <!-- Botón para agregar tarjeta -->
         <button id="agregar-tarjeta-btn">Agregar Tarjeta</button>
-
-        <!-- El botón para acceder a "Registrar Compra" aparecerá dentro de cada tarjeta en el Dashboard -->
-
-        <button onclick="cerrarSesion()">Cerrar Sesión</button>
+        <button id="compras-btn">Registrar Compras</button>
+        <button id="cerrar-sesion-btn">Cerrar Sesión</button>
     </nav>
-</header>
 
-<main id="content">
-    <!-- Aquí se cargan dinámicamente las pantallas -->
-</main>
+    <div id="content"></div>
 
-<script src="auth.js"></script>
-<script src="app.js"></script>
-
+    <script src="app.js"></script>
 </body>
 </html>
