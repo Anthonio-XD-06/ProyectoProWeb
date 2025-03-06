@@ -2,17 +2,6 @@ document.getElementById('dashboard-btn').addEventListener('click', mostrarDashbo
 document.getElementById('simulador-btn').addEventListener('click', mostrarSimulador);
 document.getElementById('agregar-tarjeta-btn').addEventListener('click', mostrarAgregarTarjeta);
 
-function mostrarLogin() {
-    const content = document.getElementById('content');
-    content.innerHTML = `
-        <h2>Iniciar Sesión</h2>
-        <label>Correo: <input type="email" id="login-correo"></label>
-        <label>Contraseña: <input type="password" id="login-password"></label>
-        <button onclick="iniciarSesion()">Iniciar Sesión</button>
-        <p>¿No tienes cuenta? <a href="#" onclick="mostrarRegistro()">Regístrate</a></p>
-        <div id="mensaje-login"></div>
-    `;
-}
 
 function mostrarRegistro() {
     const content = document.getElementById('content');
