@@ -1,6 +1,7 @@
 document.getElementById('dashboard-btn').addEventListener('click', mostrarDashboard);
 document.getElementById('simulador-btn').addEventListener('click', mostrarSimulador);
 document.getElementById('agregar-tarjeta-btn').addEventListener('click', mostrarAgregarTarjeta);
+document.getElementById('compras-btn').addEventListener('click', mostrarCompras);
 
 function mostrarDashboard() {
     verificarSesion();
@@ -14,6 +15,7 @@ function mostrarDashboard() {
         tarjetaHTML += `
             <div class="tarjeta-card">
                 <p>Tarjeta: ${tarjeta.nombre} - Fecha de Corte: ${tarjeta.fechaCorte}</p>
+                <button onclick="mostrarComprasTarjeta('${tarjeta.nombre}')">Ver Compras</button>
             </div>
         `;
     });
@@ -79,7 +81,7 @@ function guardarTarjeta() {
     let tarjetas = JSON.parse(localStorage.getItem('tarjetas')) || [];
 
     // Agregar la nueva tarjeta al arreglo
-    tarjetas.push({ nombre, fechaCorte: fecha });
+    tarjetas.push({ nombre, fechaCorte: fecha, compras: [] });
 
     // Guardar el nuevo arreglo de tarjetas en el localStorage
     localStorage.setItem('tarjetas', JSON.stringify(tarjetas));
@@ -89,9 +91,84 @@ function guardarTarjeta() {
     mostrarDashboard();
 }
 
-function cerrarSesion() {
-    localStorage.removeItem('usuarioLogueado');
-    mostrarLogin();
+function mostrarCompras() {
+    verificarSesion();
+    const content = document.getElementById('content');
+    content.innerHTML = `
+        <h2>Registrar Compra</h2>
+        <label>Nombre de la tarjeta: <input type="text" id="nombre-tarjeta-compra"></label>
+        <label>Monto de la compra: <input type="number" id="monto-compra"></label>
+        <label>Fecha de la compra: <input type="date" id="fecha-compra"></label>
+        <button onclick="guardarCompra()">Registrar Compra</button>
+        <div id="mensaje-guardar-compra"></div>
+    `;
 }
 
-verificarSesion();
+function guardarCompra() {
+    const nombreTarjeta = document.getElementById('nombre-tarjeta-compra').value;
+    const monto = parseFloat(document.getElementById('monto-compra').value);
+    const fechaCompra = document.getElementById('fecha-compra').value;
+
+    if (!nombreTarjeta || !monto || !fechaCompra) {
+        alert('Completa todos los campos.');
+        return;
+    }
+
+    // Recuperar las tarjetas del localStorage
+    let tarjetas = JSON.parse(localStorage.getItem('tarjetas')) || [];
+    
+    // Buscar la tarjeta en la que se registrará la compra
+    const tarjeta = tarjetas.find(tarjeta => tarjeta.nombre === nombreTarjeta);
+    
+    if (!tarjeta) {
+        alert('Tarjeta no encontrada.');
+        return;
+    }
+
+    // Registrar la compra en la tarjeta
+    tarjeta.compras.push({ monto, fechaCompra });
+
+    // Guardar nuevamente las tarjetas con la compra agregada
+    localStorage.setItem('tarjetas', JSON.stringify(tarjetas));
+
+    // Confirmación
+    document.getElementById('mensaje-guardar-compra').innerHTML = `Compra de $${monto} registrada correctamente.`;
+}
+
+function mostrarComprasTarjeta(nombreTarjeta) {
+    verificarSesion();
+    const content = document.getElementById('content');
+    
+    // Obtener las tarjetas del localStorage
+    const tarjetas = JSON.parse(localStorage.getItem('tarjetas')) || [];
+    
+    // Buscar la tarjeta
+    const tarjeta = tarjetas.find(tarjeta => tarjeta.nombre === nombreTarjeta);
+    
+    if (!tarjeta) {
+        alert('Tarjeta no encontrada.');
+        return;
+    }
+    
+    let comprasHTML = '';
+    tarjeta.compras.forEach(compra => {
+        comprasHTML += `
+            <div class="compra-card">
+                <p>Monto: $${compra.monto} - Fecha de compra: ${compra.fechaCompra}</p>
+            </div>
+        `;
+    });
+
+    content.innerHTML = `
+        <h2>Compras de la tarjeta: ${tarjeta.nombre}</h2>
+        <div class="compras-grid">
+            ${comprasHTML}
+        </div>
+    `;
+}
+
+function verificarSesion() {
+    if (!localStorage.getItem('usuarioLogueado')) {
+        mostrarLogin();
+    }
+}
