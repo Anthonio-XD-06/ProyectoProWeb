@@ -2,64 +2,6 @@ document.getElementById('dashboard-btn').addEventListener('click', mostrarDashbo
 document.getElementById('simulador-btn').addEventListener('click', mostrarSimulador);
 document.getElementById('agregar-tarjeta-btn').addEventListener('click', mostrarAgregarTarjeta);
 
-
-function mostrarRegistro() {
-    const content = document.getElementById('content');
-    content.innerHTML = `
-        <h2>Registro</h2>
-        <label>Correo: <input type="email" id="registro-correo"></label>
-        <label>Contraseña: <input type="password" id="registro-password"></label>
-        <button onclick="registrarUsuario()">Registrarse</button>
-        <p>¿Ya tienes cuenta? <a href="#" onclick="mostrarLogin()">Inicia Sesión</a></p>
-        <div id="mensaje-registro"></div>
-    `;
-}
-
-function registrarUsuario() {
-    const correo = document.getElementById('registro-correo').value;
-    const password = document.getElementById('registro-password').value;
-
-    if (!correo || !password) {
-        alert('Completa todos los campos.');
-        return;
-    }
-
-    if (localStorage.getItem(correo)) {
-        document.getElementById('mensaje-registro').innerText = 'Este correo ya está registrado.';
-        return;
-    }
-
-    const usuario = {
-        correo: correo,
-        password: password
-    };
-
-    localStorage.setItem(correo, JSON.stringify(usuario));
-    document.getElementById('mensaje-registro').innerText = 'Registro exitoso. Ahora puedes iniciar sesión.';
-}
-
-function iniciarSesion() {
-    const correo = document.getElementById('login-correo').value;
-    const password = document.getElementById('login-password').value;
-
-    const usuarioGuardado = localStorage.getItem(correo);
-
-    if (!usuarioGuardado) {
-        document.getElementById('mensaje-login').innerText = 'Correo no registrado.';
-        return;
-    }
-
-    const usuario = JSON.parse(usuarioGuardado);
-
-    if (usuario.password === password) {
-        document.getElementById('mensaje-login').innerText = 'Inicio de sesión exitoso.';
-        setTimeout(mostrarDashboard, 1000); // Simula redirección al dashboard
-    } else {
-        document.getElementById('mensaje-login').innerText = 'Contraseña incorrecta.';
-    }
-}
-
-
 function mostrarDashboard() {
     verificarSesion();
     const content = document.getElementById('content');
@@ -130,8 +72,3 @@ function cerrarSesion() {
 }
 
 verificarSesion();
-window.onload = function() {
-    mostrarLogin();
-};
-
-
