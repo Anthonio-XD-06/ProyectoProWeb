@@ -1,30 +1,37 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AdminFin - Finanzas Personales</title>
-    <link rel="stylesheet" href="estilos.css">
-    <link rel="javascript" href="app.js">
+    <title>Administrador de Finanzas</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <div id="login-container">
+        <h2>Iniciar Sesión</h2>
+        <input type="email" id="login-email" placeholder="Correo">
+        <input type="password" id="login-password" placeholder="Contraseña">
+        <button onclick="login()">Ingresar</button>
+        <p>¿No tienes cuenta? <a href="#" onclick="mostrarRegistro()">Regístrate aquí</a></p>
+    </div>
 
-<header>
-    <h1>AdminFin - Finanzas Personales</h1>
-</header>
+    <div id="register-container" style="display: none;">
+        <h2>Registrarse</h2>
+        <input type="email" id="register-email" placeholder="Correo">
+        <input type="password" id="register-password" placeholder="Contraseña">
+        <input type="password" id="confirm-password" placeholder="Confirmar Contraseña">
+        <button onclick="registrar()">Crear Cuenta</button>
+        <p>¿Ya tienes cuenta? <a href="#" onclick="mostrarLogin()">Inicia sesión</a></p>
+    </div>
 
-<nav>
-    <ul>
-        <li><a href="#" onclick="mostrarDashboard()">Dashboard</a></li>
-        <li><a href="#" onclick="mostrarSimulador()">Simulador</a></li>
-        <li><a href="#" onclick="mostrarAgregarTarjeta()">Agregar Tarjeta</a></li>
-    </ul>
-</nav>
+    <div id="app-container" style="display: none;">
+        <nav>
+            <button id="dashboard-btn">Dashboard</button>
+            <button id="simulador-btn">Simulador</button>
+            <button id="agregar-tarjeta-btn">Agregar Tarjeta</button>
+            <button onclick="logout()">Cerrar Sesión</button>
+        </nav>
+        <main id="content"></main>
+    </div>
 
-<main id="content">
-    <!-- Aquí se cargan dinámicamente los contenidos -->
-</main>
-
-<script src="app.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
