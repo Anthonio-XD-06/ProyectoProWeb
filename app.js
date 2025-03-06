@@ -12,6 +12,13 @@ function verificarSesion() {
         window.location.href = 'login.html'; // Redirigir a la página de login si no está logueado
     }
 }
+document.getElementById('volver-btn').addEventListener('click', volverAlDashboard);
+
+function volverAlDashboard() {
+    // Regresa al Dashboard
+    mostrarDashboard(); // Esto redirige al dashboard cuando se hace clic en "Volver"
+}
+
 
 function mostrarDashboard() {
     verificarSesion();
