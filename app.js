@@ -86,6 +86,117 @@ function verificarSesion() {
 function volverAlDashboard() {
     mostrarDashboard(); // Regresa al Dashboard
 }
+// Variables para almacenar las tarjetas
+let tarjetas = [];
+
+// Enlazamos el formulario para agregar tarjeta
+document.getElementById('form-agregar-tarjeta').addEventListener('submit', agregarTarjeta);
+
+// Función para agregar tarjeta
+function agregarTarjeta(e) {
+    e.preventDefault(); // Prevenir comportamiento por defecto de submit
+
+    // Obtener los valores del formulario
+    const monto = parseFloat(document.getElementById('monto-tarjeta').value);
+    const interes = parseFloat(document.getElementById('interes-tarjeta').value);
+    const plazo = parseInt(document.getElementById('plazo-tarjeta').value);
+
+    // Validar que los campos no estén vacíos o incorrectos
+    if (isNaN(monto) || isNaN(interes) || isNaN(plazo) || monto <= 0 || interes <= 0 || plazo <= 0) {
+        alert('Por favor, ingresa valores válidos.');
+        return;
+    }
+
+    // Agregar la tarjeta al arreglo
+    tarjetas.push({ monto, interes, plazo });
+
+    // Limpiar los campos del formulario
+    document.getElementById('monto-tarjeta').value = '';
+    document.getElementById('interes-tarjeta').value = '';
+    document.getElementById('plazo-tarjeta').value = '';
+
+    // Mostrar la lista actualizada de tarjetas
+    mostrarTarjetas();
+}
+
+// Función para mostrar las tarjetas en la lista
+function mostrarTarjetas() {
+    const listaTarjetas = document.getElementById('lista-tarjetas');
+    listaTarjetas.innerHTML = '';
+
+    tarjetas.forEach((tarjeta, index) => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+            <strong>Tarjeta ${index + 1}</strong><br>
+            Monto: $${tarjeta.monto} | Tasa: ${tarjeta.interes}% | Plazo: ${tarjeta.plazo} meses
+            <button onclick="mostrarSimulador(${index})">Ver Simulador</button>
+        `;
+        listaTarjetas.appendChild(li);
+    });
+}
+
+// Función para mostrar el simulador de una tarjeta seleccionada
+function mostrarSimulador(index) {
+    const tarjeta = tarjetas[index];
+
+    const content = document.getElementById('content');
+    content.innerHTML = `
+        <h2>Simulador de la Tarjeta ${index + 1}</h2>
+        <p>Introduce los detalles de tu deuda para calcular el pago mensual.</p>
+        <form id="simulador-form">
+            <label for="monto">Monto de la deuda ($):</label>
+            <input type="number" id="monto" value="${tarjeta.monto}" required>
+            
+            <label for="interes">Tasa de interés anual (%):</label>
+            <input type="number" id="interes" value="${tarjeta.interes}" required>
+            
+            <label for="plazo">Plazo (meses):</label>
+            <input type="number" id="plazo" value="${tarjeta.plazo}" required>
+            
+            <button type="submit">Calcular Pago</button>
+        </form>
+        
+        <div id="resultado-simulador" style="margin-top: 20px;"></div>
+    `;
+
+    // Evento para calcular el pago mensual
+    document.getElementById('simulador-form').addEventListener('submit', function (e) {
+        e.preventDefault(); // Prevenir el comportamiento por defecto de submit
+
+        // Obtener los valores del formulario
+        const monto = parseFloat(document.getElementById('monto').value);
+        const interes = parseFloat(document.getElementById('interes').value);
+        const plazo = parseInt(document.getElementById('plazo').value);
+
+        // Validar que los campos no estén vacíos o incorrectos
+        if (isNaN(monto) || isNaN(interes) || isNaN(plazo) || monto <= 0 || interes <= 0 || plazo <= 0) {
+            alert('Por favor, ingresa valores válidos.');
+            return;
+        }
+
+        // Llamar a la función para calcular el pago mensual
+        const resultado = calcularPagoMensual(monto, interes, plazo);
+
+        // Mostrar el resultado
+        document.getElementById('resultado-simulador').innerHTML = `
+            <p><strong>Pago mensual:</strong> $${resultado.pagoMensual.toFixed(2)}</p>
+            <p><strong>Total a pagar:</strong> $${resultado.totalPagar.toFixed(2)}</p>
+        `;
+    });
+}
+
+// Función para calcular el pago mensual de la deuda
+function calcularPagoMensual(monto, interes, plazo) {
+    const tasaInteresMensual = (interes / 100) / 12;
+    const pagoMensual = monto * (tasaInteresMensual * Math.pow(1 + tasaInteresMensual, plazo)) / (Math.pow(1 + tasaInteresMensual, plazo) - 1);
+    const totalPagar = pagoMensual * plazo;
+    
+    return {
+        pagoMensual: pagoMensual,
+        totalPagar: totalPagar
+    };
+}
+
 
 function mostrarDashboard() {
     verificarSesion();
