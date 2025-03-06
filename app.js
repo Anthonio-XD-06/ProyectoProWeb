@@ -1,60 +1,3 @@
-/*// Enlace a los botones
-document.getElementById('dashboard-btn').addEventListener('click', mostrarDashboard);
-document.getElementById('simulador-btn').addEventListener('click', mostrarSimulador);
-document.getElementById('agregar-tarjeta-btn').addEventListener('click', mostrarAgregarTarjeta);
-document.getElementById('compras-btn').addEventListener('click', mostrarRegistrarCompra);
-document.getElementById('cerrar-sesion-btn').addEventListener('click', cerrarSesion);
-
-document.getElementById('ver-tarjetas-btn').addEventListener('click', mostrarTarjetas);
-document.getElementById('ver-compras-btn').addEventListener('click', mostrarCompras);
-document.getElementById('volver-btn').addEventListener('click', volverAlDashboard);
-
-function verificarSesion() {
-    const sesion = localStorage.getItem('sesion');
-    if (!sesion) {
-        alert('Por favor, inicie sesión primero.');
-        window.location.href = 'login.html'; // Redirigir a la página de login si no está logueado
-    }
-}
-
-function volverAlDashboard() {
-    mostrarDashboard(); // Regresa al Dashboard
-}
-
-function mostrarDashboard() {
-    verificarSesion();
-    const content = document.getElementById('content');
-    const tarjetas = JSON.parse(localStorage.getItem('tarjetas')) || [];
-    
-    let tarjetaHTML = '';
-    tarjetas.forEach(tarjeta => {
-        tarjetaHTML += `
-            <div class="tarjeta-card">
-                <p>Tarjeta: ${tarjeta.nombre} - Fecha de Corte: ${tarjeta.fechaCorte}</p>
-                <button onclick="mostrarRegistrarCompra('${tarjeta.nombre}')">Registrar Compra</button>
-            </div>
-        `;
-    });
-
-    content.innerHTML = `
-        <h2>Dashboard Financiero</h2>
-        <p>Aquí verás tus tarjetas, pagos próximos y fechas de corte.</p>
-        <div class="tarjeta-grid">
-            ${tarjetaHTML}
-        </div>
-    `;
-    document.getElementById('volver-btn').style.display = 'none'; // Esconder el botón "Volver" en el Dashboard
-}
-
-// Resto de las funciones...
-
-function cerrarSesion() {
-    localStorage.removeItem('sesion');
-    alert('Has cerrado sesión correctamente.');
-    window.location.href = 'login.html'; // Redirigir a la página de login después de cerrar sesión
-}
-*/
-
 // Enlace a los botones
 document.getElementById('dashboard-btn').addEventListener('click', mostrarDashboard);
 document.getElementById('simulador-btn').addEventListener('click', mostrarSimulador);
@@ -92,28 +35,46 @@ let tarjetas = [];
 // Enlazamos el formulario para agregar tarjeta
 document.getElementById('form-agregar-tarjeta').addEventListener('submit', agregarTarjeta);
 
-// Función para agregar tarjeta
-function agregarTarjeta(e) {
-    e.preventDefault(); // Prevenir comportamiento por defecto de submit
 
-    // Obtener los valores del formulario
-    const monto = parseFloat(document.getElementById('monto-tarjeta').value);
-    const interes = parseFloat(document.getElementById('interes-tarjeta').value);
-    const plazo = parseInt(document.getElementById('plazo-tarjeta').value);
+// Mostrar formulario para agregar tarjeta al hacer clic en el botón
+document.getElementById('agregar-tarjeta-btn').addEventListener('click', mostrarFormularioAgregarTarjeta);
 
-    // Validar que los campos no estén vacíos o incorrectos
-    if (isNaN(monto) || isNaN(interes) || isNaN(plazo) || monto <= 0 || interes <= 0 || plazo <= 0) {
-        alert('Por favor, ingresa valores válidos.');
-        return;
-    }
+function mostrarFormularioAgregarTarjeta() {
+    document.getElementById('agregar-tarjeta-section').style.display = 'block';  // Muestra el formulario
+    document.getElementById('content').style.display = 'none';  // Oculta el contenido principal
+}
 
-    // Agregar la tarjeta al arreglo
-    tarjetas.push({ monto, interes, plazo });
+// Agregar tarjeta al localStorage o donde lo necesites
+document.getElementById('form-agregar-tarjeta').addEventListener('submit', function(event) {
+    event.preventDefault();  // Evita la recarga de la página al enviar el formulario
 
-    // Limpiar los campos del formulario
-    document.getElementById('monto-tarjeta').value = '';
-    document.getElementById('interes-tarjeta').value = '';
-    document.getElementById('plazo-tarjeta').value = '';
+    const monto = document.getElementById('monto-tarjeta').value;
+    const interes = document.getElementById('interes-tarjeta').value;
+    const plazo = document.getElementById('plazo-tarjeta').value;
+
+    // Guardamos la tarjeta (puedes hacer más validaciones aquí)
+    const nuevaTarjeta = { monto, interes, plazo };
+    let tarjetas = JSON.parse(localStorage.getItem('tarjetas')) || [];
+    tarjetas.push(nuevaTarjeta);
+    localStorage.setItem('tarjetas', JSON.stringify(tarjetas));
+
+    mostrarListaDeTarjetas();  // Muestra la lista actualizada
+    document.getElementById('form-agregar-tarjeta').reset();  // Limpia el formulario
+});
+
+// Muestra las tarjetas almacenadas
+function mostrarListaDeTarjetas() {
+    const tarjetas = JSON.parse(localStorage.getItem('tarjetas')) || [];
+    const listaTarjetas = document.getElementById('lista-tarjetas');
+    listaTarjetas.innerHTML = '';
+    tarjetas.forEach((tarjeta, index) => {
+        const li = document.createElement('li');
+        li.textContent = `Monto: $${tarjeta.monto} | Tasa de interés: ${tarjeta.interes}% | Plazo: ${tarjeta.plazo} meses`;
+        listaTarjetas.appendChild(li);
+    });
+}
+
+
 
     // Mostrar la lista actualizada de tarjetas
     mostrarTarjetas();
