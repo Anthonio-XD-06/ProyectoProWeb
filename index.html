@@ -1,38 +1,28 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <title>Administrador de Finanzas</title>
+    <meta charset="UTF-8">
+    <title>Admin Finanzas</title>
     <link rel="stylesheet" href="estilos.css">
 </head>
 <body>
-    <div id="login-container">
-        <h2>Iniciar Sesión</h2>
-        <input type="email" id="login-email" placeholder="Correo">
-        <input type="password" id="login-password" placeholder="Contraseña">
-        <button onclick="login()">Ingresar</button>
-        <p>¿No tienes cuenta? <a href="#" onclick="mostrarRegistro()">Regístrate aquí</a></p>
-    </div>
 
-    <div id="register-container" style="display: none;">
-        <h2>Registrarse</h2>
-        <input type="email" id="register-email" placeholder="Correo">
-        <input type="password" id="register-password" placeholder="Contraseña">
-        <input type="password" id="confirm-password" placeholder="Confirmar Contraseña">
-        <button onclick="registrar()">Crear Cuenta</button>
-        <p>¿Ya tienes cuenta? <a href="#" onclick="mostrarLogin()">Inicia sesión</a></p>
-    </div>
+<header>
+    <h1>Administrador de Finanzas</h1>
+    <nav>
+        <button id="dashboard-btn">Dashboard</button>
+        <button id="simulador-btn">Simulador</button>
+        <button id="agregar-tarjeta-btn">Agregar Tarjeta</button>
+        <button onclick="cerrarSesion()">Cerrar Sesión</button>
+    </nav>
+</header>
 
-    <div id="app-container" style="display: none;">
-                <nav>
-            <button id="dashboard-btn">Dashboard</button>
-            <button id="simulador-btn">Simulador</button>
-            <button id="agregar-tarjeta-btn">Agregar Tarjeta</button>
-            <button onclick="logout()">Cerrar Sesión</button>
-        </nav>
-        <main id="content"></main>
+<main id="content">
+    <!-- Aquí se cargan dinámicamente las pantallas -->
+</main>
 
-    </div>
+<script src="auth.js"></script>
+<script src="app.js"></script>
 
-    <script src="app.js"></script>
 </body>
 </html>
