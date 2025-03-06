@@ -3,24 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Principal</title>
+    <title>Dashboard Financiero</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-    <!-- Contenido de la página -->
-    <div id="content">
-        <!-- Aquí irá el contenido principal de la página -->
+    <div id="app">
+        <!-- Aquí es donde se mostrará el contenido -->
+        <div id="content">
+            <h2>Bienvenido a tu Dashboard Financiero</h2>
+            <button id="cerrar-sesion-btn">Cerrar Sesión</button>
+        </div>
     </div>
 
-    <script>
-        // Comprobar si hay una sesión activa
-        if (!localStorage.getItem('sesion')) {
-            // Si no hay sesión, redirigir al usuario a login.html
-            window.location.href = 'login.html';
-        }
-    </script>
-
-    <script src="app.js"></script> <!-- O el archivo de JS principal -->
+    <script src="index.js"></script>
 </body>
 </html>
