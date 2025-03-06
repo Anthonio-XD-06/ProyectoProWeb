@@ -1,3 +1,5 @@
+let tarjetas = JSON.parse(localStorage.getItem('tarjetas')) || [];
+
 function agregarTarjeta(event) {
     event.preventDefault();
 
