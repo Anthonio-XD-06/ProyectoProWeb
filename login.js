@@ -6,6 +6,7 @@ function iniciarSesion() {
         document.getElementById('mensaje-error').innerText = 'Por favor, completa todos los campos.';
         return;
     }
+    
 
     // Aquí podrías agregar la lógica para validar con una base de datos
     // Para este ejemplo, simplemente vamos a usar valores fijos
