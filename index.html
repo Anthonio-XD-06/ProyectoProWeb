@@ -22,6 +22,29 @@
         <button id="cerrar-sesion-btn">Cerrar Sesión</button>
         <button id="ver-tarjetas-btn">Ver Tarjetas</button>
         <button id="ver-compras-btn">Ver Compras</button>
+        
+        <!-- Formulario para agregar tarjeta -->
+        <div id="agregar-tarjeta-section" style="display: none;">
+            <h2>Agregar una nueva tarjeta</h2>
+            <form id="form-agregar-tarjeta">
+                <label for="monto-tarjeta">Monto de la deuda ($):</label>
+                <input type="number" id="monto-tarjeta" placeholder="Introduce el monto de la deuda" required>
+
+                <label for="interes-tarjeta">Tasa de interés anual (%):</label>
+                <input type="number" id="interes-tarjeta" placeholder="Introduce la tasa de interés anual" required>
+
+                <label for="plazo-tarjeta">Plazo (meses):</label>
+                <input type="number" id="plazo-tarjeta" placeholder="Introduce el número de meses" required>
+
+                <button type="submit">Agregar tarjeta</button>
+            </form>
+
+            <!-- Contenedor para las tarjetas agregadas -->
+            <div id="tarjetas-agregadas">
+                <h3>Tarjetas agregadas:</h3>
+                <ul id="lista-tarjetas"></ul>
+            </div>
+        </div>
     </div>
 
         <script src="app.js"></script> <!-- Este script debe ir primero -->
