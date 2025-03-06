@@ -32,6 +32,25 @@ h2 {
 }
 
 /* Botones */
+/* Botón Volver */
+.volver-btn {
+    background-color: #FF6B6B; /* Color de fondo rojo suave */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.volver-btn:hover {
+    background-color: #D94E4E; /* Color de fondo rojo más fuerte cuando se hace hover */
+}
+
 button {
     background-color: #3B82F6;
     color: white;
