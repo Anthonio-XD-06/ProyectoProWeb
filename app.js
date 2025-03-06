@@ -151,6 +151,32 @@ function guardarCompra(nombreTarjeta) {
     }, 1500);
 }
 
+function mostrarTarjetas() {
+    const content = document.getElementById('content');
+    content.innerHTML = `
+        <h2>Mis Tarjetas</h2>
+        <div id="tarjetas-list">
+            <!-- Lista de tarjetas -->
+            <p>Tarjeta 1 - Fecha de corte: 15/03/2025</p>
+            <p>Tarjeta 2 - Fecha de corte: 22/03/2025</p>
+        </div>
+    `;
+    document.getElementById('volver-btn').style.display = 'block'; // Mostrar botón volver
+}
+
+function mostrarCompras() {
+    const content = document.getElementById('content');
+    content.innerHTML = `
+        <h2>Mis Compras</h2>
+        <div id="compras-list">
+            <!-- Lista de compras -->
+            <p>Compra 1 - Monto: $500 - Fecha de pago: 25/03/2025</p>
+            <p>Compra 2 - Monto: $200 - Fecha de pago: 12/04/2025</p>
+        </div>
+    `;
+    document.getElementById('volver-btn').style.display = 'block'; // Mostrar botón volver
+}
+
 function cerrarSesion() {
     localStorage.removeItem('sesion');
     alert('Has cerrado sesión correctamente.');
