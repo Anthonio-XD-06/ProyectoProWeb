@@ -133,3 +133,7 @@ function guardarTarjeta() {
 
     document.getElementById('mensaje-guardar').innerHTML = `<p>Tarjeta "${nombre}" guardada correctamente con fecha de corte ${fecha}.</p>`;
 }
+
+window.onload = function() {
+    mostrarLogin();
+};
