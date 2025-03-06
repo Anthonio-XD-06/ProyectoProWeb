@@ -1,3 +1,4 @@
+
 // Enlace a los botones
 document.getElementById('dashboard-btn').addEventListener('click', mostrarDashboard);
 document.getElementById('simulador-btn').addEventListener('click', mostrarSimulador);
@@ -176,6 +177,23 @@ function mostrarCompras() {
     `;
     document.getElementById('volver-btn').style.display = 'block'; // Mostrar botón volver
 }
+
+document.getElementById('dashboard-btn').addEventListener('click', mostrarDashboard);
+
+function mostrarDashboard() {
+    const content = document.getElementById('content');
+    content.innerHTML = `
+        <h2>Dashboard Financiero</h2>
+        <p>Aquí verás tus tarjetas, pagos próximos y fechas de corte.</p>
+        <div class="tarjeta-grid">
+            <!-- Aquí puedes meter tarjetas dinámicas después -->
+            <div class="tarjeta-card">Tarjeta 1 - Fecha corte: 15/03/2025</div>
+            <div class="tarjeta-card">Tarjeta 2 - Fecha corte: 22/03/2025</div>
+        </div>
+    `;
+    document.getElementById('volver-btn').style.display = 'none'; // Esconder botón volver al estar en dashboard
+}
+
 
 function cerrarSesion() {
     localStorage.removeItem('sesion');
