@@ -112,6 +112,18 @@ function mostrarDashboard() {
     document.getElementById('volver-btn').style.display = 'none'; // Esconder el botón "Volver" en el Dashboard
 }
 
+function mostrarSimulador() {
+    verificarSesion(); // Asegúrate de que el usuario esté logueado.
+    
+    const content = document.getElementById('content');
+    content.innerHTML = `
+        <h2>Simulador de Pagos</h2>
+        <!-- Aquí iría el contenido del simulador -->
+        <p>Este es el simulador, ¿cómo te gustaría configurarlo?</p>
+        <!-- Agregar formularios o entradas del simulador -->
+    `;
+}
+
 // Resto de las funciones...
 function cerrarSesion() {
     localStorage.removeItem('sesion');
