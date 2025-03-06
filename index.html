@@ -3,20 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Administra tus Finanzas</title>
+    <title>Página Principal</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <nav>
-        <button id="dashboard-btn">Dashboard</button>
-        <button id="simulador-btn">Simulador</button>
-        <button id="agregar-tarjeta-btn">Agregar Tarjeta</button>
-        <button id="compras-btn">Registrar Compras</button>
-        <button id="cerrar-sesion-btn">Cerrar Sesión</button>
-    </nav>
 
-    <div id="content"></div>
+    <!-- Contenido de la página -->
+    <div id="content">
+        <!-- Aquí irá el contenido principal de la página -->
+    </div>
 
-    <script src="app.js"></script>
+    <script>
+        // Comprobar si hay una sesión activa
+        if (!localStorage.getItem('sesion')) {
+            // Si no hay sesión, redirigir al usuario a login.html
+            window.location.href = 'login.html';
+        }
+    </script>
+
+    <script src="app.js"></script> <!-- O el archivo de JS principal -->
 </body>
 </html>
