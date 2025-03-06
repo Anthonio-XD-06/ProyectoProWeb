@@ -1,131 +1,129 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Cargar Dashboard al inicio
-  mostrarDashboard();
-
-  // Eventos para los botones de menú
-  document.getElementById("dashboard-btn").addEventListener("click", mostrarDashboard);
-  document.getElementById("simulador-btn").addEventListener("click", mostrarSimulador);
-  document.getElementById("agregar-tarjeta-btn").addEventListener("click", mostrarAgregarTarjeta);
+    if (localStorage.getItem("usuario")) {
+        mostrarApp();
+    } else {
+        mostrarLogin();
+    }
 });
-// Datos simulados (esto normalmente vendría del backend)
+
+// --- AUTENTICACIÓN ---
+
+function mostrarLogin() {
+    document.getElementById("login-container").style.display = "block";
+    document.getElementById("register-container").style.display = "none";
+    document.getElementById("app-container").style.display = "none";
+}
+
+function mostrarRegistro() {
+    document.getElementById("login-container").style.display = "none";
+    document.getElementById("register-container").style.display = "block";
+}
+
+function mostrarApp() {
+    document.getElementById("login-container").style.display = "none";
+    document.getElementById("register-container").style.display = "none";
+    document.getElementById("app-container").style.display = "block";
+    mostrarDashboard();
+}
+
+function registrar() {
+    const email = document.getElementById("register-email").value;
+    const password = document.getElementById("register-password").value;
+    const confirmPassword = document.getElementById("confirm-password").value;
+
+    if (!email || !password) {
+        alert("Por favor, completa todos los campos.");
+        return;
+    }
+    if (password !== confirmPassword) {
+        alert("Las contraseñas no coinciden.");
+        return;
+    }
+
+    if (localStorage.getItem(email)) {
+        alert("Este correo ya está registrado.");
+        return;
+    }
+
+    // Guardar usuario en localStorage
+    localStorage.setItem(email, JSON.stringify({ password }));
+    alert("Registro exitoso. Ahora puedes iniciar sesión.");
+    mostrarLogin();
+}
+
+function login() {
+    const email = document.getElementById("login-email").value;
+    const password = document.getElementById("login-password").value;
+
+    const usuario = JSON.parse(localStorage.getItem(email));
+
+    if (!usuario || usuario.password !== password) {
+        alert("Correo o contraseña incorrectos.");
+        return;
+    }
+
+    localStorage.setItem("usuario", email);
+    mostrarApp();
+}
+
+function logout() {
+    localStorage.removeItem("usuario");
+    mostrarLogin();
+}
+
+// --- DASHBOARD ---
+
 const tarjetas = [
-  {
-      id: 1,
-      nombre: "Visa Santander",
-      saldo: 12500,
-      fechaCorte: "15/03/2025",
-      proximoPago: 2000,
-      fechaPago: "20/03/2025"
-  },
-  {
-      id: 2,
-      nombre: "BBVA Oro",
-      saldo: 5000,
-      fechaCorte: "10/03/2025",
-      proximoPago: 1500,
-      fechaPago: "15/03/2025"
-  }
+    { id: 1, nombre: "Visa Santander", saldo: 12500, fechaCorte: "15/03/2025", proximoPago: 2000, fechaPago: "20/03/2025" },
+    { id: 2, nombre: "BBVA Oro", saldo: 5000, fechaCorte: "10/03/2025", proximoPago: 1500, fechaPago: "15/03/2025" }
 ];
+
+document.getElementById("dashboard-btn").addEventListener("click", mostrarDashboard);
+document.getElementById("simulador-btn").addEventListener("click", mostrarSimulador);
+document.getElementById("agregar-tarjeta-btn").addEventListener("click", mostrarAgregarTarjeta);
+
 function mostrarDashboard() {
-  const content = document.getElementById("content");
-  
-  let totalSaldo = tarjetas.reduce((total, t) => total + t.saldo, 0);
-  let totalPagos = tarjetas.reduce((total, t) => total + t.proximoPago, 0);
-  
-  const fechaActual = new Date().toLocaleDateString();
-  const fechasCorte = tarjetas.map(t => t.fechaCorte);
-  const fechaCorteProxima = fechasCorte.sort()[0];  // La más próxima (sólo simulación)
+    const content = document.getElementById("content");
 
-  content.innerHTML = `
-      <h2>Dashboard</h2>
-      <div class="resumen">
-          <p>📅 Fecha actual: ${fechaActual}</p>
-          <p>💳 Total Saldo: $${totalSaldo.toLocaleString()}</p>
-          <p>📆 Próximos Pagos: $${totalPagos.toLocaleString()}</p>
-          <p>🚨 Fecha de corte más cercana: ${fechaCorteProxima}</p>
-      </div>
+    let totalSaldo = tarjetas.reduce((total, t) => total + t.saldo, 0);
+    let totalPagos = tarjetas.reduce((total, t) => total + t.proximoPago, 0);
 
-      <h3>Mis Tarjetas</h3>
-      <div class="tarjeta-grid">
-          ${tarjetas.map(t => `
-              <div class="tarjeta-card">
-                  <h4>${t.nombre}</h4>
-                  <p>Saldo: $${t.saldo.toLocaleString()}</p>
-                  <p>Fecha de corte: ${t.fechaCorte}</p>
-                  <p>Próximo pago: $${t.proximoPago.toLocaleString()} - ${t.fechaPago}</p>
-                  <button onclick="verTarjeta(${t.id})">Ver Detalles</button>
-              </div>
-          `).join("")}
-      </div>
+    const fechaActual = new Date().toLocaleDateString();
+    const fechasCorte = tarjetas.map(t => t.fechaCorte).sort();
+    const fechaCorteProxima = fechasCorte[0];
 
-      <h3>Alertas</h3>
-      <div class="alertas">
-          ${generarAlertas()}
-      </div>
-  `;
+    content.innerHTML = `
+        <h2>Dashboard</h2>
+        <div class="resumen">
+            <p>📅 Fecha actual: ${fechaActual}</p>
+            <p>💳 Total Saldo: $${totalSaldo.toLocaleString()}</p>
+            <p>📆 Próximos Pagos: $${totalPagos.toLocaleString()}</p>
+            <p>🚨 Fecha de corte más cercana: ${fechaCorteProxima}</p>
+        </div>
+        <h3>Mis Tarjetas</h3>
+        <div class="tarjeta-grid">
+            ${tarjetas.map(t => `
+                <div class="tarjeta-card">
+                    <h4>${t.nombre}</h4>
+                    <p>Saldo: $${t.saldo.toLocaleString()}</p>
+                    <p>Fecha de corte: ${t.fechaCorte}</p>
+                    <p>Próximo pago: $${t.proximoPago.toLocaleString()} - ${t.fechaPago}</p>
+                    <button onclick="verTarjeta(${t.id})">Ver Detalles</button>
+                </div>
+            `).join("")}
+        </div>
+    `;
 }
-function generarAlertas() {
-  let alertas = "";
-  const hoy = new Date();
-  
-  tarjetas.forEach(t => {
-      const fechaPago = new Date(t.fechaPago);
-      const diasRestantes = Math.ceil((fechaPago - hoy) / (1000 * 60 * 60 * 24));
-
-      if (diasRestantes <= 5) {
-          alertas += `<p>🚨 El pago de ${t.nombre} vence en ${diasRestantes} días.</p>`;
-      }
-  });
-
-  return alertas || "<p>✅ No hay alertas pendientes.</p>";
-}
-
 
 function mostrarSimulador() {
-  document.getElementById('content').innerHTML = `
-      <h2>Simulador de Préstamos</h2>
-      <form>
-          <label>Monto:</label><input type="number" id="monto">
-          <label>Plazo (meses):</label><input type="number" id="plazo">
-          <label>Interés Anual (%):</label><input type="number" id="interes">
-          <button type="button" onclick="calcularPrestamo()">Calcular</button>
-      </form>
-      <div id="resultado-simulador"></div>
-  `;
-}
-
-function calcularPrestamo() {
-  const monto = parseFloat(document.getElementById('monto').value);
-  const plazo = parseInt(document.getElementById('plazo').value);
-  const interes = parseFloat(document.getElementById('interes').value) / 100 / 12;
-
-  const cuota = (monto * interes) / (1 - Math.pow(1 + interes, -plazo));
-  const total = cuota * plazo;
-  const intereses = total - monto;
-
-  document.getElementById('resultado-simulador').innerHTML = `
-      <p>Pago Mensual: $${cuota.toFixed(2)}</p>
-      <p>Total Pagado: $${total.toFixed(2)}</p>
-      <p>Intereses Totales: $${intereses.toFixed(2)}</p>
-  `;
+    document.getElementById("content").innerHTML = `<h2>Simulador de Préstamos</h2><p>Aquí irá el simulador...</p>`;
 }
 
 function mostrarAgregarTarjeta() {
-  document.getElementById('content').innerHTML = `
-      <h2>Agregar Tarjeta</h2>
-      <form>
-          <label>Nombre:</label><input type="text" id="nombreTarjeta">
-          <label>Saldo Inicial:</label><input type="number" id="saldoInicial">
-          <label>Fecha de Corte:</label><input type="date" id="fechaCorte">
-          <button type="button" onclick="agregarTarjeta()">Guardar Tarjeta</button>
-      </form>
-  `;
-}
-
-function agregarTarjeta() {
-  alert('Esta función guardaría la tarjeta (puede conectarse al backend después).');
+    document.getElementById("content").innerHTML = `<h2>Agregar Tarjeta</h2><p>Formulario para agregar una nueva tarjeta...</p>`;
 }
 
 function verTarjeta(id) {
-  alert(`Mostrando detalles de tarjeta con ID: ${id}`);
+    const tarjeta = tarjetas.find(t => t.id === id);
+    alert(`Detalles de ${tarjeta.nombre}\nSaldo: $${tarjeta.saldo}\nFecha de Corte: ${tarjeta.fechaCorte}\nPróximo Pago: $${tarjeta.proximoPago}`);
 }
