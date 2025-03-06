@@ -116,12 +116,63 @@ function mostrarSimulador() {
     verificarSesion(); // Asegúrate de que el usuario esté logueado.
     
     const content = document.getElementById('content');
+    
+    // Generamos el contenido del simulador
     content.innerHTML = `
-        <h2>Simulador de Pagos</h2>
-        <!-- Aquí iría el contenido del simulador -->
-        <p>Este es el simulador, ¿cómo te gustaría configurarlo?</p>
-        <!-- Agregar formularios o entradas del simulador -->
+        <h2>Simulador de Pagos de Tarjeta</h2>
+        <p>Introduce los detalles de tu deuda para calcular el pago mensual.</p>
+        <form id="simulador-form">
+            <label for="monto">Monto de la deuda ($):</label>
+            <input type="number" id="monto" placeholder="Introduce el monto de la deuda" required>
+            
+            <label for="interes">Tasa de interés anual (%):</label>
+            <input type="number" id="interes" placeholder="Introduce la tasa de interés anual" required>
+            
+            <label for="plazo">Plazo (meses):</label>
+            <input type="number" id="plazo" placeholder="Introduce el número de meses" required>
+            
+            <button type="submit">Calcular Pago</button>
+        </form>
+        
+        <div id="resultado-simulador" style="margin-top: 20px;"></div>
     `;
+
+    // Evento para calcular el pago mensual
+    document.getElementById('simulador-form').addEventListener('submit', function (e) {
+        e.preventDefault(); // Prevenir el comportamiento por defecto de submit
+
+        // Obtener los valores del formulario
+        const monto = parseFloat(document.getElementById('monto').value);
+        const interes = parseFloat(document.getElementById('interes').value);
+        const plazo = parseInt(document.getElementById('plazo').value);
+
+        // Validar que los campos no estén vacíos o incorrectos
+        if (isNaN(monto) || isNaN(interes) || isNaN(plazo) || monto <= 0 || interes <= 0 || plazo <= 0) {
+            alert('Por favor, ingresa valores válidos.');
+            return;
+        }
+
+        // Llamar a la función para calcular el pago mensual
+        const resultado = calcularPagoMensual(monto, interes, plazo);
+
+        // Mostrar el resultado
+        document.getElementById('resultado-simulador').innerHTML = `
+            <p><strong>Pago mensual:</strong> $${resultado.pagoMensual.toFixed(2)}</p>
+            <p><strong>Total a pagar:</strong> $${resultado.totalPagar.toFixed(2)}</p>
+        `;
+    });
+}
+
+// Función para calcular el pago mensual de la deuda
+function calcularPagoMensual(monto, interes, plazo) {
+    const tasaInteresMensual = (interes / 100) / 12;
+    const pagoMensual = monto * (tasaInteresMensual * Math.pow(1 + tasaInteresMensual, plazo)) / (Math.pow(1 + tasaInteresMensual, plazo) - 1);
+    const totalPagar = pagoMensual * plazo;
+    
+    return {
+        pagoMensual: pagoMensual,
+        totalPagar: totalPagar
+    };
 }
 
 // Resto de las funciones...
