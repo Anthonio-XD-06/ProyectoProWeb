@@ -5,12 +5,24 @@ document.getElementById('agregar-tarjeta-btn').addEventListener('click', mostrar
 function mostrarDashboard() {
     verificarSesion();
     const content = document.getElementById('content');
+    
+    // Obtener las tarjetas guardadas del localStorage
+    const tarjetas = JSON.parse(localStorage.getItem('tarjetas')) || [];
+    
+    let tarjetaHTML = '';
+    tarjetas.forEach(tarjeta => {
+        tarjetaHTML += `
+            <div class="tarjeta-card">
+                <p>Tarjeta: ${tarjeta.nombre} - Fecha de Corte: ${tarjeta.fechaCorte}</p>
+            </div>
+        `;
+    });
+    
     content.innerHTML = `
         <h2>Dashboard Financiero</h2>
         <p>Aquí verás tus tarjetas, pagos próximos y fechas de corte.</p>
         <div class="tarjeta-grid">
-            <div class="tarjeta-card">Tarjeta 1 - Fecha corte: 15/03/2025</div>
-            <div class="tarjeta-card">Tarjeta 2 - Fecha corte: 22/03/2025</div>
+            ${tarjetaHTML}
         </div>
     `;
 }
@@ -63,7 +75,18 @@ function guardarTarjeta() {
         return;
     }
 
+    // Recuperar las tarjetas del localStorage
+    let tarjetas = JSON.parse(localStorage.getItem('tarjetas')) || [];
+
+    // Agregar la nueva tarjeta al arreglo
+    tarjetas.push({ nombre, fechaCorte: fecha });
+
+    // Guardar el nuevo arreglo de tarjetas en el localStorage
+    localStorage.setItem('tarjetas', JSON.stringify(tarjetas));
+
+    // Confirmación y recarga de dashboard
     document.getElementById('mensaje-guardar').innerHTML = `Tarjeta "${nombre}" guardada con fecha de corte ${fecha}.`;
+    mostrarDashboard();
 }
 
 function cerrarSesion() {
